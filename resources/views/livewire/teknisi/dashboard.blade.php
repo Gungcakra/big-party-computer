@@ -1,13 +1,11 @@
 <div>
     {{-- Stats row --}}
-    <div class="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
         @foreach ([
-            ['Total Masuk',       $stats['total_masuk'],      'bg-blue-50 text-blue-600',     'M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18'],
-            ['Antri',             $stats['antri'],             'bg-amber-50 text-amber-600',   'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['Dikerjakan',        $stats['dalam_pengerjaan'],  'bg-violet-50 text-violet-600', 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z'],
-            ['Selesai',           $stats['selesai'],           'bg-emerald-50 text-emerald-600','M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['Pelanggan',         $stats['total_pelanggan'],   'bg-sky-50 text-sky-600',       'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z'],
-            ['Pendapatan Bulan',  'Rp ' . number_format($stats['pendapatan_bulan'], 0, ',', '.'), 'bg-rose-50 text-rose-600', 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z'],
+            ['Total Ditugaskan', $stats['total_ditugaskan'], 'bg-blue-50 text-blue-600',    'M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18'],
+            ['Antri',            $stats['antri'],            'bg-amber-50 text-amber-600',   'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
+            ['Dikerjakan',       $stats['dalam_pengerjaan'], 'bg-violet-50 text-violet-600', 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z'],
+            ['Selesai',          $stats['selesai'],          'bg-emerald-50 text-emerald-600','M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
         ] as [$label, $value, $color, $path])
         <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <div class="flex items-start justify-between gap-2">
@@ -25,11 +23,11 @@
         @endforeach
     </div>
 
-    {{-- Recent service list --}}
+    {{-- Active queue --}}
     <div class="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm">
         <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-            <h2 class="text-sm font-semibold text-slate-900">Servis Terbaru</h2>
-            <a href="{{ route('admin.penerimaan-perangkat') }}" class="text-xs font-medium text-blue-600 hover:text-blue-700">Lihat semua →</a>
+            <h2 class="text-sm font-semibold text-slate-900">Pekerjaan Aktif</h2>
+            <a href="{{ route('teknisi.antrian-servis') }}" class="text-xs font-medium text-blue-600 hover:text-blue-700">Lihat semua →</a>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
@@ -38,29 +36,30 @@
                         <th class="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Nomor Nota</th>
                         <th class="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Pelanggan</th>
                         <th class="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Perangkat</th>
-                        <th class="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Teknisi</th>
+                        <th class="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Keluhan</th>
                         <th class="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Status</th>
-                        <th class="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Tanggal</th>
+                        <th class="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Masuk</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    @forelse ($recentServis as $s)
+                    @forelse ($activeServis as $s)
                     @php
                         [$badgeClass, $badgeLabel] = match($s->status) {
                             'antri'            => ['bg-amber-100 text-amber-800', 'Antri'],
                             'dalam_pengerjaan' => ['bg-blue-100 text-blue-800', 'Dikerjakan'],
-                            'selesai'          => ['bg-emerald-100 text-emerald-800', 'Selesai'],
                             default            => ['bg-slate-100 text-slate-700', $s->status],
                         };
                     @endphp
                     <tr class="transition-colors hover:bg-slate-50/50">
-                        <td class="px-5 py-3 font-medium text-blue-700">{{ $s->nomor_nota ?? '-' }}</td>
+                        <td class="px-5 py-3 font-medium text-blue-700">{{ $s->nomor_nota ?? '—' }}</td>
                         <td class="px-5 py-3">
                             <p class="font-medium text-slate-900">{{ $s->perangkat->pelanggan->nama }}</p>
                             <p class="text-xs text-slate-400">{{ $s->perangkat->pelanggan->telepon }}</p>
                         </td>
                         <td class="px-5 py-3 text-slate-600">{{ $s->perangkat->jenis_perangkat }} — {{ $s->perangkat->merek }}</td>
-                        <td class="px-5 py-3 text-slate-600">{{ $s->teknisi?->name ?? '—' }}</td>
+                        <td class="max-w-xs px-5 py-3 text-slate-500">
+                            <p class="truncate">{{ $s->perangkat->keluhan }}</p>
+                        </td>
                         <td class="px-5 py-3">
                             <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium {{ $badgeClass }}">{{ $badgeLabel }}</span>
                         </td>
@@ -68,7 +67,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="py-10 text-center text-sm text-slate-400">Belum ada data servis.</td>
+                        <td colspan="6" class="py-10 text-center text-sm text-slate-400">Tidak ada pekerjaan aktif saat ini.</td>
                     </tr>
                     @endforelse
                 </tbody>

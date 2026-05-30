@@ -20,14 +20,7 @@ class Servis extends Model
     {
         static::creating(function (Servis $servis): void {
             $servis->tanggal_masuk ??= today();
-        });
-
-        // nomor_nota is set after insert so we can embed the auto-increment ID,
-        // guaranteeing uniqueness without a DB lock.
-        static::created(function (Servis $servis): void {
-            $servis->updateQuietly([
-                'nomor_nota' => sprintf('BPC/%s/%04d', now()->format('Y/m'), $servis->id),
-            ]);
+            $servis->nomor_nota    ??= sprintf('BPC/%s/%04d', now()->format('Y/m'), now()->timestamp % 10000);
         });
     }
 

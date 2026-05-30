@@ -16,8 +16,13 @@ class PenerimaanPerangkat extends Component
     use WithPagination;
 
     const JENIS_PERANGKAT = [
-        'Laptop', 'Desktop PC', 'Printer', 'Monitor',
-        'Keyboard/Mouse', 'Hard Disk/SSD', 'Lainnya',
+        'Laptop',
+        'Desktop PC',
+        'Printer',
+        'Monitor',
+        'Keyboard/Mouse',
+        'Hard Disk/SSD',
+        'Lainnya',
     ];
 
     #[Url]
@@ -48,8 +53,14 @@ class PenerimaanPerangkat extends Component
     public string $keluhan        = '';
     public string $kelengkapan    = '';
 
-    public function updatingSearch(): void       { $this->resetPage(); }
-    public function updatingFilterStatus(): void { $this->resetPage(); }
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+    public function updatingFilterStatus(): void
+    {
+        $this->resetPage();
+    }
 
     public function openCreate(): void
     {
@@ -67,7 +78,7 @@ class PenerimaanPerangkat extends Component
         $this->nama          = $pelanggan->nama;
         $this->telepon       = $pelanggan->telepon;
         $this->alamat        = $pelanggan->alamat ?? '';
-        $this->jenisPerangkat= $perangkat->jenis_perangkat;
+        $this->jenisPerangkat = $perangkat->jenis_perangkat;
         $this->merek         = $perangkat->merek;
         $this->spesifikasi   = $perangkat->spesifikasi ?? '';
         $this->keluhan       = $perangkat->keluhan;
@@ -80,13 +91,13 @@ class PenerimaanPerangkat extends Component
         $this->validate([
             'nama'          => 'required|string|max:255',
             'telepon'       => 'required|string|max:20',
-            'jenisPerangkat'=> 'required|string|max:100',
+            'jenisPerangkat' => 'required|string|max:100',
             'merek'         => 'required|string|max:100',
             'keluhan'       => 'required|string|max:2000',
         ], [
             'nama.required'          => 'Nama pelanggan wajib diisi.',
             'telepon.required'       => 'Nomor telepon wajib diisi.',
-            'jenisPerangkat.required'=> 'Jenis perangkat wajib dipilih.',
+            'jenisPerangkat.required' => 'Jenis perangkat wajib dipilih.',
             'merek.required'         => 'Merek perangkat wajib diisi.',
             'keluhan.required'       => 'Keluhan pelanggan wajib diisi.',
         ]);
@@ -173,8 +184,14 @@ class PenerimaanPerangkat extends Component
     private function resetFormFields(): void
     {
         $this->reset([
-            'nama', 'telepon', 'alamat',
-            'jenisPerangkat', 'merek', 'spesifikasi', 'keluhan', 'kelengkapan',
+            'nama',
+            'telepon',
+            'alamat',
+            'jenisPerangkat',
+            'merek',
+            'spesifikasi',
+            'keluhan',
+            'kelengkapan',
             'editId',
         ]);
     }
@@ -183,14 +200,18 @@ class PenerimaanPerangkat extends Component
     {
         $data = Servis::query()
             ->with(['perangkat.pelanggan', 'teknisi'])
-            ->when($this->search, fn ($q) =>
+            ->when(
+                $this->search,
+                fn($q) =>
                 $q->where('nomor_nota', 'like', "%{$this->search}%")
-                  ->orWhereHas('perangkat.pelanggan', fn ($q) =>
-                      $q->where('nama', 'like', "%{$this->search}%")
-                        ->orWhere('telepon', 'like', "%{$this->search}%")
-                  )
+                    ->orWhereHas(
+                        'perangkat.pelanggan',
+                        fn($q) =>
+                        $q->where('nama', 'like', "%{$this->search}%")
+                            ->orWhere('telepon', 'like', "%{$this->search}%")
+                    )
             )
-            ->when($this->filterStatus, fn ($q) => $q->where('status', $this->filterStatus))
+            ->when($this->filterStatus, fn($q) => $q->where('status', $this->filterStatus))
             ->latest()
             ->paginate(10);
 

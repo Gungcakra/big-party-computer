@@ -7,6 +7,9 @@ use App\Livewire\Admin\Pengguna;
 use App\Livewire\Admin\PenerimaanPerangkat;
 use App\Livewire\Admin\Transaksi;
 use App\Livewire\Auth\Login;
+use App\Livewire\Pelanggan\CekStatus;
+use App\Livewire\Teknisi\AntarianServis as TeknisiAntarianServis;
+use App\Livewire\Teknisi\Dashboard as TeknisiDashboard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/cek-status', CekStatus::class)->name('cek-status');
 
 // Autentikasi
 Route::middleware('guest')->group(function () {
@@ -39,5 +44,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 // Teknisi
 Route::middleware(['auth', 'role:teknisi'])->prefix('teknisi')->name('teknisi.')->group(function () {
-    Route::get('/dashboard', fn () => view('teknisi.dashboard'))->name('dashboard');
+    Route::get('/dashboard',      TeknisiDashboard::class)      ->name('dashboard');
+    Route::get('/antrian-servis', TeknisiAntarianServis::class) ->name('antrian-servis');
 });

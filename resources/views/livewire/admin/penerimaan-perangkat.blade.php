@@ -83,7 +83,7 @@
                         <td class="px-4 py-3">
                             <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium {{ $badgeClass }}">{{ $badgeLabel }}</span>
                         </td>
-                        <td class="px-4 py-3 text-slate-500">{{ $servis->tanggal_masuk->format('d/m/Y') }}</td>
+                        <td class="px-4 py-3 text-slate-500">{{ \Carbon\Carbon::parse($servis->tanggal_masuk)->format('d F Y') }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
                                 <button wire:click="openEdit({{ $servis->id }})"

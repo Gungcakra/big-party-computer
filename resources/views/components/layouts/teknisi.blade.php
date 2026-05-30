@@ -1,4 +1,4 @@
-@props(['heading' => 'Admin'])
+@props(['heading' => 'Teknisi'])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 <head>
@@ -54,49 +54,17 @@
                 };
             @endphp
 
-            {{-- Utama --}}
             <p class="mb-1 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Utama</p>
 
-            @php $item = $navItem('admin.dashboard', 'Dashboard', 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6') @endphp
+            @php $item = $navItem('teknisi.dashboard', 'Dashboard', 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6') @endphp
             <a href="{{ route($item['route']) }}" class="{{ $item['cls'] }}">
                 <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/></svg>
                 {{ $item['label'] }}
             </a>
 
-            {{-- Layanan --}}
-            <p class="mb-1 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Layanan</p>
+            <p class="mb-1 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Pekerjaan</p>
 
-            @php $item = $navItem('admin.penerimaan-perangkat', 'Penerimaan Perangkat', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4') @endphp
-            <a href="{{ route($item['route']) }}" class="{{ $item['cls'] }}">
-                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/></svg>
-                {{ $item['label'] }}
-            </a>
-
-            @php $item = $navItem('admin.antrian-servis', 'Antrian & Servis', 'M4 6h16M4 10h16M4 14h16M4 18h16') @endphp
-            <a href="{{ route($item['route']) }}" class="{{ $item['cls'] }}">
-                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/></svg>
-                {{ $item['label'] }}
-            </a>
-
-            @php $item = $navItem('admin.transaksi', 'Transaksi', 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z') @endphp
-            <a href="{{ route($item['route']) }}" class="{{ $item['cls'] }}">
-                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/></svg>
-                {{ $item['label'] }}
-            </a>
-
-            {{-- Laporan --}}
-            <p class="mb-1 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Laporan</p>
-
-            @php $item = $navItem('admin.laporan', 'Laporan', 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z') @endphp
-            <a href="{{ route($item['route']) }}" class="{{ $item['cls'] }}">
-                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/></svg>
-                {{ $item['label'] }}
-            </a>
-
-            {{-- Pengaturan --}}
-            <p class="mb-1 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Pengaturan</p>
-
-            @php $item = $navItem('admin.pengguna', 'Kelola Pengguna', 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z') @endphp
+            @php $item = $navItem('teknisi.antrian-servis', 'Antrian & Servis', 'M4 6h16M4 10h16M4 14h16M4 18h16') @endphp
             <a href="{{ route($item['route']) }}" class="{{ $item['cls'] }}">
                 <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/></svg>
                 {{ $item['label'] }}
@@ -107,7 +75,7 @@
         <div class="border-t border-white/10 p-3">
             <div class="flex items-center gap-3 rounded-lg px-3 py-2.5">
                 <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
-                    {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                    {{ strtoupper(substr(auth()->user()->name ?? 'T', 0, 1)) }}
                 </div>
                 <div class="min-w-0 flex-1">
                     <p class="truncate text-sm font-medium text-white">{{ auth()->user()->name ?? 'User' }}</p>
@@ -131,7 +99,6 @@
         {{-- Topbar --}}
         <header class="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-4 border-b border-slate-200 bg-white px-4 shadow-sm sm:px-6">
 
-            {{-- Hamburger (mobile) --}}
             <button
                 @click="sidebarOpen = true"
                 class="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 lg:hidden"
@@ -142,30 +109,11 @@
                 </svg>
             </button>
 
-            {{-- Page heading --}}
             <div class="flex flex-1 items-center gap-2">
                 <h1 class="text-sm font-semibold text-slate-900 sm:text-base">{{ $heading }}</h1>
             </div>
 
-            {{-- Right actions --}}
             <div class="flex items-center gap-1">
-
-                {{-- Search --}}
-                <button class="hidden rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 sm:flex">
-                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
-                    </svg>
-                </button>
-
-                {{-- Notifications --}}
-                <button class="relative rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
-                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
-                    </svg>
-                    <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-blue-600 ring-2 ring-white"></span>
-                </button>
-
-                {{-- User dropdown --}}
                 <div class="relative ml-1" x-data="{ open: false }">
                     <button
                         @click="open = !open"
@@ -173,7 +121,7 @@
                         class="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-slate-100"
                     >
                         <div class="flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
-                            {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                            {{ strtoupper(substr(auth()->user()->name ?? 'T', 0, 1)) }}
                         </div>
                         <span class="hidden text-sm font-medium text-slate-700 sm:block">{{ auth()->user()->name ?? '' }}</span>
                         <svg class="hidden h-4 w-4 text-slate-400 sm:block" viewBox="0 0 20 20" fill="currentColor">
