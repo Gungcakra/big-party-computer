@@ -14,11 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Halaman publik
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/cek-status', CekStatus::class)->name('cek-status');
+Route::get('/', CekStatus::class)->name('cek-status');
 
 // Autentikasi
 Route::middleware('guest')->group(function () {
