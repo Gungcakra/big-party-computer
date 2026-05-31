@@ -37,6 +37,7 @@
                         <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-400">Biaya Sparepart</th>
                         <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-400">Total</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Tgl Bayar</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Metode</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Admin</th>
                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-400">Aksi</th>
                     </tr>
@@ -53,6 +54,13 @@
                         <td class="px-4 py-3 text-right text-slate-700">Rp {{ number_format($t->biaya_sparepart, 0, ',', '.') }}</td>
                         <td class="px-4 py-3 text-right font-semibold text-slate-900">Rp {{ number_format($t->total, 0, ',', '.') }}</td>
                         <td class="px-4 py-3 text-slate-500">{{ $t->tanggal_bayar->format('d/m/Y') }}</td>
+                        <td class="px-4 py-3">
+                            @if ($t->metode_bayar === 'transfer')
+                            <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">Transfer</span>
+                            @else
+                            <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Cash</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-slate-500">{{ $t->admin->name }}</td>
                         <td class="px-4 py-3">
                             <div class="flex gap-2">
@@ -65,7 +73,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="py-12 text-center text-sm text-slate-400">Belum ada data transaksi.</td>
+                        <td colspan="9" class="py-12 text-center text-sm text-slate-400">Belum ada data transaksi.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -126,11 +134,22 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="mb-1 block text-sm font-medium text-slate-700">Tanggal Bayar <span class="text-red-500">*</span></label>
-                    <input wire:model="tanggalBayar" type="date"
-                           class="w-full rounded-lg border px-3 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('tanggalBayar') border-red-400 @else border-slate-300 @enderror">
-                    @error('tanggalBayar') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label class="mb-1 block text-sm font-medium text-slate-700">Metode Bayar <span class="text-red-500">*</span></label>
+                        <select wire:model="metodeBayar"
+                                class="w-full rounded-lg border px-3 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('metodeBayar') border-red-400 @else border-slate-300 @enderror">
+                            <option value="cash">Cash</option>
+                            <option value="transfer">Transfer</option>
+                        </select>
+                        @error('metodeBayar') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-sm font-medium text-slate-700">Tanggal Bayar <span class="text-red-500">*</span></label>
+                        <input wire:model="tanggalBayar" type="date"
+                               class="w-full rounded-lg border px-3 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('tanggalBayar') border-red-400 @else border-slate-300 @enderror">
+                        @error('tanggalBayar') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                    </div>
                 </div>
 
                 <div>

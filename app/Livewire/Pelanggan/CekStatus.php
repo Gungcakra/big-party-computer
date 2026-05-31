@@ -20,7 +20,7 @@ class CekStatus extends Component
             'nomorNota.required' => 'Nomor nota servis wajib diisi.',
         ]);
 
-        $servis = Servis::with(['perangkat.pelanggan', 'teknisi'])
+        $servis = Servis::with(['perangkat.pelanggan', 'teknisi', 'transaksi'])
             ->where('nomor_nota', trim($this->nomorNota))
             ->first();
 
@@ -30,6 +30,8 @@ class CekStatus extends Component
             $this->result = null;
             return;
         }
+
+        $transaksi = $servis->transaksi;
 
         $this->result = [
             'nomor_nota'      => $servis->nomor_nota,
@@ -43,6 +45,14 @@ class CekStatus extends Component
             'merek'           => $servis->perangkat->merek,
             'keluhan'         => $servis->perangkat->keluhan,
             'teknisi'         => $servis->teknisi?->name,
+            'transaksi'       => $transaksi ? [
+                'biaya_jasa'      => $transaksi->biaya_jasa,
+                'biaya_sparepart' => $transaksi->biaya_sparepart,
+                'total'           => $transaksi->total,
+                'metode_bayar'    => $transaksi->metode_bayar,
+                'tanggal_bayar'   => $transaksi->tanggal_bayar?->toDateString(),
+                'catatan'         => $transaksi->catatan,
+            ] : null,
         ];
     }
 

@@ -182,6 +182,59 @@
                     </div>
                     @endif
 
+                    {{-- Transaksi / Payment --}}
+                    @if ($result['transaksi'])
+                    <div class="px-6 py-5">
+                        <p class="mb-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Informasi Pembayaran</p>
+                        <dl class="space-y-2.5 text-sm">
+                            <div class="flex gap-3">
+                                <dt class="w-28 shrink-0 text-slate-500">Biaya Jasa</dt>
+                                <dd class="font-medium text-slate-200">Rp {{ number_format($result['transaksi']['biaya_jasa'], 0, ',', '.') }}</dd>
+                            </div>
+                            <div class="flex gap-3">
+                                <dt class="w-28 shrink-0 text-slate-500">Biaya Sparepart</dt>
+                                <dd class="font-medium text-slate-200">Rp {{ number_format($result['transaksi']['biaya_sparepart'], 0, ',', '.') }}</dd>
+                            </div>
+                            <div class="flex gap-3 border-t border-white/10 pt-2.5">
+                                <dt class="w-28 shrink-0 font-semibold text-slate-400">Total</dt>
+                                <dd class="font-bold text-emerald-400 text-base">Rp {{ number_format($result['transaksi']['total'], 0, ',', '.') }}</dd>
+                            </div>
+                            <div class="flex gap-3">
+                                <dt class="w-28 shrink-0 text-slate-500">Metode Bayar</dt>
+                                <dd>
+                                    @if ($result['transaksi']['metode_bayar'] === 'transfer')
+                                    <span class="inline-flex items-center rounded-full border border-blue-500/40 bg-blue-500/15 px-2.5 py-0.5 text-xs font-semibold text-blue-300">Transfer</span>
+                                    @else
+                                    <span class="inline-flex items-center rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2.5 py-0.5 text-xs font-semibold text-emerald-300">Cash</span>
+                                    @endif
+                                </dd>
+                            </div>
+                            <div class="flex gap-3">
+                                <dt class="w-28 shrink-0 text-slate-500">Tgl Bayar</dt>
+                                <dd class="font-medium text-slate-200">{{ \Carbon\Carbon::parse($result['transaksi']['tanggal_bayar'])->translatedFormat('d F Y') }}</dd>
+                            </div>
+                            @if ($result['transaksi']['catatan'])
+                            <div class="flex gap-3">
+                                <dt class="w-28 shrink-0 text-slate-500">Catatan</dt>
+                                <dd class="text-slate-300">{{ $result['transaksi']['catatan'] }}</dd>
+                            </div>
+                            @endif
+                        </dl>
+
+                        {{-- Download Invoice --}}
+                        <div class="mt-5">
+                            <a href="{{ route('invoice.download', ['nota' => $result['nomor_nota']]) }}"
+                               target="_blank"
+                               class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500 active:bg-blue-700">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                </svg>
+                                Download Invoice PDF
+                            </a>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
             </div>
 
