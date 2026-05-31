@@ -92,6 +92,6 @@ class AntarianServis extends Component
         $teknisiList = User::where('role', User::ROLE_TEKNISI)->orderBy('name')->get();
 
         return view('livewire.admin.antrian-servis', compact('data', 'teknisiList'))
-            ->layout('components.layouts.admin', ['heading' => 'Antrian & Servis']);
+            ->layout('components.layouts.admin.index', ['heading' => 'Antrian & Servis']);
     }
 }

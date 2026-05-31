@@ -89,6 +89,6 @@ class AntarianServis extends Component
             ->paginate(10);
 
         return view('livewire.teknisi.antrian-servis', compact('data'))
-            ->layout('components.layouts.teknisi', ['heading' => 'Antrian & Servis']);
+            ->layout('components.layouts.teknisi.index', ['heading' => 'Antrian & Servis']);
     }
 }

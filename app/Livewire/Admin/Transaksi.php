@@ -179,6 +179,6 @@ class Transaksi extends Component
             ->get();
 
         return view('livewire.admin.transaksi', compact('data', 'servisTersedia'))
-            ->layout('components.layouts.admin', ['heading' => 'Transaksi']);
+            ->layout('components.layouts.admin.index', ['heading' => 'Transaksi']);
     }
 }

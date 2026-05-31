@@ -143,6 +143,6 @@ class Pengguna extends Component
             ->paginate(10);
 
         return view('livewire.admin.pengguna', compact('data'))
-            ->layout('components.layouts.admin', ['heading' => 'Kelola Pengguna']);
+            ->layout('components.layouts.admin.index', ['heading' => 'Kelola Pengguna']);
     }
 }

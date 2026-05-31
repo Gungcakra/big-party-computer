@@ -103,22 +103,24 @@ Status constants live on `Servis`: `STATUS_ANTRI`, `STATUS_DALAM_PENGERJAAN`, `S
 
 ### Layouts (`resources/views/components/layouts/`)
 
-Four layouts — pick by role/context:
+Each layout lives in its own subfolder with an `index.blade.php` entry point and partial files alongside it:
 
-| File | Used by |
-|---|---|
-| `admin.blade.php` | All authenticated Admin pages |
-| `teknisi.blade.php` | All authenticated Teknisi pages |
-| `guest.blade.php` | Login page |
-| `public.blade.php` | Public customer status page |
+| Folder | Partials | Used by |
+|---|---|---|
+| `admin/` | `index`, `sidebar`, `navbar` | All authenticated Admin pages |
+| `teknisi/` | `index`, `sidebar`, `navbar` | All authenticated Teknisi pages |
+| `guest/` | `index` only | Login page |
+| `public/` | `index` only | Public customer status page |
 
 Admin and Teknisi Livewire components apply the layout in `render()`:
 ```php
-return view('livewire.admin.foo')->layout('components.layouts.admin', ['heading' => 'Title']);
-return view('livewire.teknisi.foo')->layout('components.layouts.teknisi', ['heading' => 'Title']);
+return view('livewire.admin.foo')->layout('components.layouts.admin.index', ['heading' => 'Title']);
+return view('livewire.teknisi.foo')->layout('components.layouts.teknisi.index', ['heading' => 'Title']);
 ```
-`Login` uses the class-level `#[Layout('components.layouts.guest')]` attribute instead.  
-`CekStatus` uses `'components.layouts.public'`.
+`Login` uses the class-level `#[Layout('components.layouts.guest.index')]` attribute instead.  
+`CekStatus` uses `'components.layouts.public.index'`.
+
+The `index.blade.php` files include their partials via `@include('components.layouts.admin.sidebar')` etc. The `$heading` prop and `sidebarOpen` Alpine state defined on `<body>` are both available in partials automatically through `@include` scope.
 
 ### Routes (`routes/web.php`)
 
