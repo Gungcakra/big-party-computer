@@ -25,9 +25,10 @@
                 </div>
             </div>
 
-            <h1 class="mb-3 text-3xl font-bold text-white">Sistem Monitoring<br>Layanan Servis</h1>
+            <h1 class="mb-3 text-3xl font-bold text-white">Sistem Monitoring<br>Layanan Perbaikan Komputer</h1>
             <p class="mb-10 text-sm leading-relaxed text-slate-400">
-                Platform digital terpadu untuk manajemen perbaikan komputer — dari penerimaan perangkat hingga penyelesaian transaksi.
+                Platform digital terpadu untuk manajemen perbaikan komputer
+                 dari penerimaan perangkat hingga penyelesaian transaksi.
             </p>
 
             {{-- Feature list --}}
