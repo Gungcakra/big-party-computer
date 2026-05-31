@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,7 +13,6 @@ class Pengguna extends Component
 {
     use WithPagination;
 
-    #[Url]
     public string $search = '';
 
     // Modal

@@ -7,7 +7,6 @@ use App\Models\Perangkat;
 use App\Models\Servis;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -25,10 +24,10 @@ class PenerimaanPerangkat extends Component
         'Lainnya',
     ];
 
-    #[Url]
+    // #[Url
     public string $search = '';
 
-    #[Url]
+    // #[Url]
     public string $filterStatus = '';
 
     // Modal

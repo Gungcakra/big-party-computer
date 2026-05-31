@@ -14,7 +14,8 @@ A web-based computer repair service management system. It replaces manual paper-
 - **Frontend**: Livewire 4.x + Tailwind CSS 4.x + Alpine.js (bundled via `@livewireScripts`)
 - **Build**: Vite 8 via `laravel-vite-plugin`
 - **Excel export**: `maatwebsite/excel` ^3.1
-- **Database**: SQLite for local dev; production target is MySQL (per PRD)
+- **PDF generation**: `barryvdh/laravel-dompdf` ^3.1 — used for invoice downloads via `Pdf::loadView()`
+- **Database**: SQLite for local dev; production target is MySQL
 - **Fonts**: Bunny fonts (Instrument Sans) via `vite.config.js`
 
 ## Commands
@@ -24,6 +25,13 @@ A web-based computer repair service management system. It replaces manual paper-
 composer setup
 ```
 Runs: `composer install`, copies `.env`, generates app key, migrates, `npm install`, `npm run build`.
+
+Seed default admin and teknisi accounts:
+```bash
+php artisan db:seed
+# admin@bigpartycomputer.com / password
+# teknisi@bigpartycomputer.com / password
+```
 
 ### Development (all services)
 ```bash
@@ -61,16 +69,21 @@ Three actors, five core entities:
 | **Pelanggan** (Customer) | Public, no login — check repair status via service receipt number |
 
 **Entities & key relations:**
-- `PELANGGAN` 1→M `PERANGKAT` (one customer, many devices)
-- `PERANGKAT` 1→1 `SERVIS` (one device has one active service record)
-- `PENGGUNA` (Teknisi) 1→M `SERVIS` (one technician handles many services)
-- `SERVIS` 1→1 `TRANSAKSI` (one service yields one transaction)
+- `PELANGGAN` (`nama`, `telepon`, `alamat`) 1→M `PERANGKAT`
+- `PERANGKAT` (`jenis_perangkat`, `merek`, `spesifikasi`, `keluhan`, `kelengkapan`) 1→1 `SERVIS`
+- `PENGGUNA` (Teknisi) 1→M `SERVIS`
+- `SERVIS` 1→1 `TRANSAKSI`
 - `PENGGUNA` (Admin) 1→M `TRANSAKSI`
 
 **Service status flow:** `Antri` → `Dalam Pengerjaan` → `Selesai`  
 Status constants live on `Servis`: `STATUS_ANTRI`, `STATUS_DALAM_PENGERJAAN`, `STATUS_SELESAI`.
 
-**Nomor nota servis** is auto-generated in the `Servis::creating` boot hook (before INSERT) so the model already has it set after `Servis::create()` returns — no `refresh()` needed.
+**`Servis` fields of note:**
+- `diagnosa` — technician's diagnosis text
+- `catatan` — technician's additional notes (separate from diagnosa)
+- `nomor_nota` — auto-generated in the `creating` boot hook, format `BPC/YYYY/MM/NNNN`; not in `#[Fillable]` since it's set directly on the model instance. No `refresh()` needed after `Servis::create()`.
+
+**`Transaksi` fields:** `biaya_jasa`, `biaya_sparepart`, `total`, `metode_bayar` (`cash`/`transfer`), `tanggal_bayar`, `catatan`.
 
 ## Modules
 
@@ -80,10 +93,11 @@ Status constants live on `Servis`: `STATUS_ANTRI`, `STATUS_DALAM_PENGERJAAN`, `S
 | Penerimaan Perangkat | Device intake form, auto-generate nomor nota |
 | Antrian & Servis (Admin) | Assign device to technician, update status/diagnosa |
 | Antrian & Servis (Teknisi) | View own queue, update diagnosa & status |
-| Monitoring Status | **Public page** — customer enters nomor nota, sees real-time status |
-| Transaksi | Admin records payment, views transaction history |
+| Monitoring Status | **Public root page** — customer enters nomor nota, sees real-time status + invoice download if paid |
+| Transaksi | Admin records payment (with metode_bayar), views transaction history |
 | Laporan | Admin filters by date range, exports to XLSX |
 | Kelola Pengguna | Admin CRUD for admin & teknisi accounts |
+| Invoice PDF | Public `GET /invoice?nota=...` — dompdf PDF download, only accessible when servis has a transaksi |
 
 ## Architecture
 
@@ -110,13 +124,15 @@ return view('livewire.teknisi.foo')->layout('components.layouts.teknisi', ['head
 
 | Path | Handler | Middleware |
 |---|---|---|
-| `GET /` | welcome view | — |
-| `GET /cek-status` | `Pelanggan\CekStatus` | — |
+| `GET /` | `Pelanggan\CekStatus` (named `cek-status`) | — |
+| `GET /invoice` | `InvoiceController@download` (query: `?nota=`) | — |
 | `GET /login` | `Auth\Login` | `guest` |
 | `POST /logout` | closure | `auth` |
 | `GET /admin/*` | `Admin\*` Livewire | `auth`, `role:admin` |
 | `GET /teknisi/dashboard` | `Teknisi\Dashboard` | `auth`, `role:teknisi` |
 | `GET /teknisi/antrian-servis` | `Teknisi\AntarianServis` | `auth`, `role:teknisi` |
+
+The invoice route uses a query parameter (`?nota=BPC/2026/05/0001`) instead of a path segment to avoid URL encoding issues with the slash-separated nomor_nota format.
 
 ### Role middleware
 `role` alias registered in `bootstrap/app.php` → `App\Http\Middleware\RoleMiddleware`.  
@@ -133,14 +149,19 @@ After login, `Login` redirects by role: `match(Auth::user()->role)`.
 Namespaced by role: `Admin\`, `Teknisi\`, `Pelanggan\`. All are full-page components.
 
 **Common patterns across Admin and Teknisi components:**
-- **Pagination + URL state**: `use WithPagination` + `#[Url]` on `$search` / `$filterStatus`; call `$this->resetPage()` in `updating*` hooks.
+- **Pagination**: `use WithPagination`; call `$this->resetPage()` in `updating*` hooks for `$search` / `$filterStatus`. Do NOT add `#[Url]` to these properties — search terms must not appear in the URL for authenticated pages.
 - **Modal pattern**: `bool $showModal`, `bool $showDeleteModal`, `?int $editId`, `?int $deleteId`.
 - **Alert pattern**: `string $message`, `string $messageType` (`'success'`/`'error'`).
 - **Inline validation**: `$this->validate([...])` with Indonesian error messages. Only `Login` uses the `#[Validate]` attribute.
 
 **Teknisi scope**: All Teknisi queries filter by `WHERE teknisi_id = Auth::id()` — teknisi can only see and update their own assigned items.
 
-**`Pelanggan\CekStatus`**: public, no auth. Stores the query result as `?array $result` (not an Eloquent model — Livewire cannot serialize models as public properties reliably).
+**`Pelanggan\CekStatus`**: public, no auth. Stores the query result as `?array $result` (not an Eloquent model — Livewire cannot serialize models as public properties reliably). The array includes a `transaksi` key (null or nested array with `biaya_jasa`, `biaya_sparepart`, `total`, `metode_bayar`, `tanggal_bayar`, `catatan`) — presence of this key drives showing the payment section and invoice download button.
+
+**`Admin\PenerimaanPerangkat`**: create path wraps `Pelanggan::create()` + `Perangkat::create()` + `Servis::create()` in a single `DB::transaction()`. The `JENIS_PERANGKAT` constant on this component is the canonical list of device types used in the intake form.
+
+### PDF Invoice (`app/Http/Controllers/InvoiceController.php`)
+Fetches `Servis` with `['perangkat.pelanggan', 'teknisi', 'transaksi.admin']`, requires a transaksi to exist (404 otherwise), and streams a dompdf PDF from `resources/views/invoice.blade.php`. The invoice template uses `DejaVu Sans` (dompdf's built-in font) and table-based layout for reliable PDF rendering — avoid flexbox in this template.
 
 ### Excel Export (`app/Exports/LaporanTransaksiExport.php`)
 Used by `Admin\Laporan::export()`. Implements `FromCollection`, `WithHeadings`, `WithMapping`, `WithStyles`, `WithEvents`, `ShouldAutoSize`. The `AfterSheet` event appends a bold summary row (`"Jumlah: N transaksi"` + totals) after all data rows. Monetary values are formatted as strings (`"Rp X.XXX"`) for consistent Indonesian locale display.
