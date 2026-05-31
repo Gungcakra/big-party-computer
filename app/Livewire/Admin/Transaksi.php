@@ -28,12 +28,13 @@ class Transaksi extends Component
     public string $messageType = 'success';
 
     // Form fields
-    public ?int $servisId       = null;
+    public ?int $servisId        = null;
     public string $biayaJasa      = '0';
     public string $biayaSparepart = '0';
     public string $total          = '0';
     public string $catatan        = '';
     public string $tanggalBayar   = '';
+    public string $metodeBayar    = 'cash';
 
     public function mount(): void
     {
@@ -69,6 +70,7 @@ class Transaksi extends Component
         $this->total          = (string) $t->total;
         $this->catatan        = $t->catatan ?? '';
         $this->tanggalBayar   = $t->tanggal_bayar->toDateString();
+        $this->metodeBayar    = $t->metode_bayar ?? 'cash';
         $this->showModal      = true;
     }
 
@@ -79,10 +81,13 @@ class Transaksi extends Component
             'biayaJasa'      => 'required|numeric|min:0',
             'biayaSparepart' => 'required|numeric|min:0',
             'tanggalBayar'   => 'required|date',
+            'metodeBayar'    => 'required|in:cash,transfer',
         ], [
-            'servisId.required'      => 'Servis wajib dipilih.',
-            'biayaJasa.required'     => 'Biaya jasa wajib diisi.',
-            'tanggalBayar.required'  => 'Tanggal bayar wajib diisi.',
+            'servisId.required'    => 'Servis wajib dipilih.',
+            'biayaJasa.required'   => 'Biaya jasa wajib diisi.',
+            'tanggalBayar.required' => 'Tanggal bayar wajib diisi.',
+            'metodeBayar.required' => 'Metode bayar wajib dipilih.',
+            'metodeBayar.in'       => 'Metode bayar tidak valid.',
         ]);
 
         $this->hitungTotal();
@@ -94,6 +99,7 @@ class Transaksi extends Component
             'total'           => (float) $this->total,
             'catatan'         => $this->catatan ?: null,
             'tanggal_bayar'   => $this->tanggalBayar,
+            'metode_bayar'    => $this->metodeBayar,
         ];
 
         if ($this->editId) {
@@ -149,6 +155,7 @@ class Transaksi extends Component
         $this->biayaSparepart = '0';
         $this->total          = '0';
         $this->tanggalBayar   = today()->toDateString();
+        $this->metodeBayar    = 'cash';
     }
 
     public function render(): View

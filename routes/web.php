@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use App\Livewire\Admin\AntarianServis;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Laporan;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 // Halaman publik
 Route::get('/', CekStatus::class)->name('cek-status');
+Route::get('/invoice', [InvoiceController::class, 'download'])->name('invoice.download');
 
 // Autentikasi
 Route::middleware('guest')->group(function () {
