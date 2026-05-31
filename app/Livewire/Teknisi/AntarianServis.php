@@ -5,7 +5,6 @@ namespace App\Livewire\Teknisi;
 use App\Models\Servis;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,10 +12,8 @@ class AntarianServis extends Component
 {
     use WithPagination;
 
-    #[Url]
     public string $search = '';
 
-    #[Url]
     public string $filterStatus = '';
 
     // Update modal
