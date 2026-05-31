@@ -78,6 +78,6 @@ class Laporan extends Component
 
         return view('livewire.admin.laporan', compact(
             'laporan', 'totalPendapatan', 'totalServis', 'totalJasa', 'totalSparepart'
-        ))->layout('components.layouts.admin', ['heading' => 'Laporan']);
+        ))->layout('components.layouts.admin.index', ['heading' => 'Laporan']);
     }
 }

@@ -28,6 +28,6 @@ class Dashboard extends Component
             ->get();
 
         return view('livewire.teknisi.dashboard', compact('stats', 'activeServis'))
-            ->layout('components.layouts.teknisi', ['heading' => 'Dashboard']);
+            ->layout('components.layouts.teknisi.index', ['heading' => 'Dashboard']);
     }
 }

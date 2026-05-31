@@ -29,6 +29,6 @@ class Dashboard extends Component
             ->get();
 
         return view('livewire.admin.dashboard', compact('stats', 'recentServis'))
-            ->layout('components.layouts.admin', ['heading' => 'Dashboard']);
+            ->layout('components.layouts.admin.index', ['heading' => 'Dashboard']);
     }
 }

@@ -7,7 +7,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-#[Layout('components.layouts.guest')]
+#[Layout('components.layouts.guest.index')]
 class Login extends Component
 {
     #[Validate('required|email|max:255')]

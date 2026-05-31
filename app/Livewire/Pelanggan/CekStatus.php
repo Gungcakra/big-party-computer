@@ -59,6 +59,6 @@ class CekStatus extends Component
     public function render(): View
     {
         return view('livewire.pelanggan.cek-status')
-            ->layout('components.layouts.public', ['heading' => 'Cek Status Perbaikan']);
+            ->layout('components.layouts.public.index', ['heading' => 'Cek Status Perbaikan']);
     }
 }

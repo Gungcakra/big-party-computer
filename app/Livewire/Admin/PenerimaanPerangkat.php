@@ -215,6 +215,6 @@ class PenerimaanPerangkat extends Component
             ->paginate(10);
 
         return view('livewire.admin.penerimaan-perangkat', ['data' => $data])
-            ->layout('components.layouts.admin', ['heading' => 'Penerimaan Perangkat']);
+            ->layout('components.layouts.admin.index', ['heading' => 'Penerimaan Perangkat']);
     }
 }
